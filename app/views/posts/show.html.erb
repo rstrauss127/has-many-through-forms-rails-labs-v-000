@@ -1,16 +1,29 @@
 
-<h1>Title: <%= @post.title %></h1>
-<ul>
-  <% @post.categories.each do |cat| %>
-    <li><%= cat.name %></li>
-  <% end %>  
-</ul>
 
-  
-<p><%= @post.content %></p>
-<ul>
-  <% @post.comments.each do |comt| %>
-    <li><%= comt %></li>
-  <% end %>
+<h1><%=@post.title%></h1>
+<p><%=@post.content%></p>
+<%@post.categories.each do |c| %>
+  <%=c.name%>
+<%end%>
+<!-- <h3>Comments</h3>
+<%@post.comments.each do |c| %>
+<%= c.content%><br>
+<%end%> -->
+<h3>These users commented: </h3>
+<%@post.comments.each do |c| %>
+<%= link_to "#{c.user.username}", user_path(c)%> says: <%= c.content%><br>
 
-</ul>
+<%end%>
+<h3>Leave a Comment</h3>
+<%= form_for @comment do |f|%>
+<%= f.collection_select :user_id, User.all, :id, :username, :include_blank => true%><br>
+<%= f.label "Create New User:"%><br>
+<%= f.fields_for :user, @comment.build_user do |user_fields|%>
+<%= user_fields.text_field :username %><br>
+<%end%>
+<%= f.hidden_field :post_id, value: @post.id%>
+<%= f.label "Comment:"%><br>
+<%= f.text_area :content%><br>
+<%= f.submit %>
+RealBigFish says: great post!
+<%end%>

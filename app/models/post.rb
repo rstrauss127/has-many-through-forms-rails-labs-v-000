@@ -11,4 +11,8 @@ class Post < ActiveRecord::Base
       self.post_categories.build(category: category)
     end
   end
+
+  def commentors
+    self.comments.map { |comment| comment.user }.uniq.reject { |user| user.nil? }
+  end
 end
