@@ -1,3 +1,4 @@
+
 <h1>Title: <%= @post.title %></h1>
 <ul>
   <% @post.categories.each do |cat| %>
@@ -5,21 +6,14 @@
   <% end %>
 </ul>
 
-<%= form_for @post.comments.build do |f| %>
-    <%= f.label "Content" %>
-    <%= f.text_area :content %>
-
-    <%= f.collection_select :user_id, User.all, :id, :username, include_blank: "Choose a User" %>
-    <%= f.hidden_field :post_id %>
-    <%= f.submit "Create Comment" %>
-<% end %>
-
-<input type="text" id="post_categories_attributes_0_name" name="post[attributes][0]][name]">
 
 <p><%= @post.content %></p>
 <ul>
   <% @post.comments.each do |comt| %>
-    <li><%= comt.user%> says:<%= comt.content %></li>
+    <li><%= comt %></li>
   <% end %>
-
 </ul>
+
+<%= f.fields_for :comments, post.comments.build do |comments_fields| %>
+  <%= comments_fields.text_field :content %>
+<% end %>
